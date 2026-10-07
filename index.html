@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MIMIC YOU</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="static/css/style.css">
+</head>
+<body class="bg-black text-zinc-100 min-h-screen flex flex-col font-space selection:bg-white selection:text-black p-6 space-y-6">
+
+    
+    <header class="flex justify-between items-center">
+        <div class="border border-zinc-800 bg-[#0a0a0a] rounded-xl px-5 py-2.5 flex items-center space-x-3">
+            <span class="h-2.5 w-2.5 rounded-full bg-white animate-pulse"></span>
+            <span class="font-bold tracking-tight text-sm text-white uppercase">MIMIC <span class="text-zinc-400">YOU</span></span>
+        </div>
+        <div class="border border-zinc-800 rounded-xl px-4 py-1.5 bg-[#0a0a0a] text-xs font-mono text-zinc-500">
+            v1.0.0
+        </div>
+    </header>
+
+    
+    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+        
+        
+        <div id="drop-zone" class="lg:col-span-8 border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-5 flex flex-col min-h-[380px] relative group hover:border-white/40 transition-all">
+            <input type="file" id="file-input" accept=".txt,.md" class="hidden">
+            
+            <div class="flex justify-between items-center pb-3 border-b border-zinc-800 mb-3">
+                <button onclick="document.getElementById('file-input').click()" class="border border-zinc-700 bg-black hover:border-white text-zinc-200 hover:text-white px-4 py-1.5 rounded-xl text-xs font-mono transition-all">
+                    upload or drag and drop
+                </button>
+                <span class="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">Input Workspace</span>
+            </div>
+
+            <textarea id="text-input" class="w-full flex-1 bg-black border border-zinc-900 rounded-xl p-4 text-xs font-mono text-zinc-200 focus:outline-none focus:border-white resize-none" placeholder="Type or paste text script here..."></textarea>
+        </div>
+
+        
+        <div class="lg:col-span-4 border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-5 flex flex-col justify-between space-y-4">
+            
+            <div class="space-y-4">
+                <span class="text-xs font-mono uppercase tracking-wider text-zinc-400 block border-b border-zinc-800 pb-2">Audio Parameters</span>
+
+                
+                <div>
+                    <label class="block text-xs font-mono text-zinc-400 mb-1.5">Voice Selection</label>
+                    <select id="voice-select" class="w-full bg-black border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-white font-mono">
+                    
+                    </select>
+                </div>
+
+               
+                <div>
+                    <div class="flex justify-between text-xs font-mono text-zinc-400 mb-1">
+                        <span>Speed / Rate Control</span>
+                        <span id="rate-val" class="text-white">1.0x</span>
+                    </div>
+                    <input type="range" id="rate-range" min="0.5" max="2" step="0.1" value="1" class="w-full accent-white cursor-pointer">
+                </div>
+
+                
+                <div>
+                    <div class="flex justify-between text-xs font-mono text-zinc-400 mb-1">
+                        <span>Pitch Control</span>
+                        <span id="pitch-val" class="text-white">1.0
