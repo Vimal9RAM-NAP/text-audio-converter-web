@@ -10,61 +10,139 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="static/css/style.css">
 </head>
-<body class="bg-black text-zinc-100 min-h-screen flex flex-col font-space selection:bg-white selection:text-black p-6 space-y-6">
+<body class="bg-black text-zinc-100 h-screen overflow-hidden flex flex-col font-space selection:bg-white selection:text-black p-5 space-y-4">
 
     
-    <header class="flex justify-between items-center">
-        <div class="border border-zinc-800 bg-[#0a0a0a] rounded-xl px-5 py-2.5 flex items-center space-x-3">
+    <header class="flex justify-between items-center shrink-0">
+        <div class="border border-zinc-800 bg-[#0a0a0a] rounded-xl px-4 py-2 flex items-center space-x-3">
             <span class="h-2.5 w-2.5 rounded-full bg-white animate-pulse"></span>
-            <span class="font-bold tracking-tight text-sm text-white uppercase">MIMIC <span class="text-zinc-400">YOU</span></span>
+            <span class="font-bold tracking-tight text-xs text-white uppercase">MIMIC <span class="text-zinc-400">YOU</span></span>
         </div>
-        <div class="border border-zinc-800 rounded-xl px-4 py-1.5 bg-[#0a0a0a] text-xs font-mono text-zinc-500">
+        <div class="border border-zinc-800 rounded-xl px-3 py-1 bg-[#0a0a0a] text-[11px] font-mono text-zinc-500">
             v1.0.0
         </div>
     </header>
 
     
-    <section class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-stretch">
+    <main class="grid grid-cols-1 lg:grid-cols-12 gap-4 flex-1 min-h-0">
         
         
-        <div id="drop-zone" class="lg:col-span-8 border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-5 flex flex-col min-h-[380px] relative group hover:border-white/40 transition-all">
-            <input type="file" id="file-input" accept=".txt,.md" class="hidden">
+        <div class="lg:col-span-8 flex flex-col space-y-4 min-h-0">
             
-            <div class="flex justify-between items-center pb-3 border-b border-zinc-800 mb-3">
-                <button onclick="document.getElementById('file-input').click()" class="border border-zinc-700 bg-black hover:border-white text-zinc-200 hover:text-white px-4 py-1.5 rounded-xl text-xs font-mono transition-all">
-                    upload or drag and drop
-                </button>
-                <span class="text-[11px] font-mono text-zinc-500 uppercase tracking-wider">Input Workspace</span>
+            
+            <div id="drop-zone" class="border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-4 flex flex-col flex-1 min-h-0 relative group hover:border-white/40 transition-all">
+                <input type="file" id="file-input" accept=".txt,.md" class="hidden">
+                <div class="flex justify-between items-center pb-2 border-b border-zinc-800 mb-2 shrink-0">
+                    <button onclick="document.getElementById('file-input').click()" class="border border-zinc-700 bg-black hover:border-white text-zinc-200 hover:text-white px-3 py-1 rounded-lg text-[11px] font-mono transition-all">
+                        upload or drag and drop
+                    </button>
+                    <span class="text-[10px] font-mono text-zinc-500 uppercase tracking-wider">Input Workspace</span>
+                </div>
+                <textarea id="text-input" class="w-full flex-1 bg-black border border-zinc-900 rounded-xl p-3 text-xs font-mono text-zinc-200 focus:outline-none focus:border-white resize-none" placeholder="Type or paste text script here..."></textarea>
             </div>
 
-            <textarea id="text-input" class="w-full flex-1 bg-black border border-zinc-900 rounded-xl p-4 text-xs font-mono text-zinc-200 focus:outline-none focus:border-white resize-none" placeholder="Type or paste text script here..."></textarea>
+            <
+            <div class="border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-4 flex flex-col justify-between space-y-3 shrink-0">
+                <span class="text-[11px] font-mono uppercase tracking-wider text-zinc-400 block border-b border-zinc-800 pb-1">Playback Visualizer Stage</span>
+                
+                <div class="border border-zinc-900 rounded-xl bg-black h-16 flex items-center justify-center p-2 relative overflow-hidden">
+                    <canvas id="visualizer-canvas" class="w-full h-full"></canvas>
+                </div>
+
+                <div class="flex space-x-2 pt-1">
+                    <button id="play-btn" onclick="playSpeech()" class="flex-1 bg-white hover:bg-zinc-200 text-black font-bold py-2.5 rounded-xl transition-all text-xs uppercase tracking-wider">
+                        Play
+                    </button>
+                    <button id="pause-btn" onclick="pauseSpeech()" class="border border-zinc-800 hover:border-zinc-600 text-zinc-300 px-5 py-2.5 rounded-xl text-xs font-mono transition-all">
+                        Pause
+                    </button>
+                    <button id="stop-btn" onclick="stopSpeech()" class="border border-zinc-800 hover:border-zinc-600 text-zinc-300 px-5 py-2.5 rounded-xl text-xs font-mono transition-all">
+                        Stop
+                    </button>
+                </div>
+            </div>
+
         </div>
 
-        
-        <div class="lg:col-span-4 border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-5 flex flex-col justify-between space-y-4">
+       
+        <div class="lg:col-span-4 flex flex-col space-y-4 min-h-0 justify-between">
             
-            <div class="space-y-4">
-                <span class="text-xs font-mono uppercase tracking-wider text-zinc-400 block border-b border-zinc-800 pb-2">Audio Parameters</span>
+           
+            <div class="border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-4 space-y-3 shrink-0">
+                <span class="text-[11px] font-mono uppercase tracking-wider text-zinc-400 block border-b border-zinc-800 pb-1">Audio Parameters</span>
 
                 
                 <div>
-                    <label class="block text-xs font-mono text-zinc-400 mb-1.5">Voice Selection</label>
-                    <select id="voice-select" class="w-full bg-black border border-zinc-800 rounded-xl p-2.5 text-xs text-white focus:outline-none focus:border-white font-mono">
-                    
+                    <label class="block text-[11px] font-mono text-zinc-400 mb-1">Voice Selection</label>
+                    <select id="voice-select" class="w-full bg-black border border-zinc-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-white font-mono">
+                        <option value="">Loading System Voices...</option>
                     </select>
                 </div>
 
-               
+                
                 <div>
-                    <div class="flex justify-between text-xs font-mono text-zinc-400 mb-1">
+                    <div class="flex justify-between text-[11px] font-mono text-zinc-400 mb-0.5">
                         <span>Speed / Rate Control</span>
                         <span id="rate-val" class="text-white">1.0x</span>
                     </div>
                     <input type="range" id="rate-range" min="0.5" max="2" step="0.1" value="1" class="w-full accent-white cursor-pointer">
                 </div>
 
-                
+               
                 <div>
-                    <div class="flex justify-between text-xs font-mono text-zinc-400 mb-1">
+                    <div class="flex justify-between text-[11px] font-mono text-zinc-400 mb-0.5">
                         <span>Pitch Control</span>
-                        <span id="pitch-val" class="text-white">1.0
+                        <span id="pitch-val" class="text-white">1.0</span>
+                    </div>
+                    <input type="range" id="pitch-range" min="0.5" max="1.5" step="0.1" value="1" class="w-full accent-white cursor-pointer">
+                </div>
+
+               
+                <div>
+                    <div class="flex justify-between text-[11px] font-mono text-zinc-400 mb-0.5">
+                        <span>Volume Control</span>
+                        <span id="volume-val" class="text-white">100%</span>
+                    </div>
+                    <input type="range" id="volume-range" min="0" max="1" step="0.1" value="1" class="w-full accent-white cursor-pointer">
+                </div>
+            </div>
+
+            
+            <div class="border border-zinc-800 rounded-2xl p-3 bg-[#0a0a0a] space-y-1 text-xs font-mono text-zinc-400 shrink-0">
+                <span class="text-[10px] text-zinc-500 uppercase tracking-wider block border-b border-zinc-900 pb-1">Text & Audio Metrics</span>
+                <div class="flex justify-between">
+                    <span>Words: <strong id="stat-words" class="text-white">0</strong></span>
+                    <span>Chars: <strong id="stat-chars" class="text-white">0</strong></span>
+                </div>
+                <div class="flex justify-between">
+                    <span>Est. Time: <strong id="stat-time" class="text-white">0s</strong></span>
+                    <span>Lang: <strong id="stat-lang" class="text-white">EN</strong></span>
+                </div>
+            </div>
+
+            
+            <div class="border border-zinc-800 rounded-2xl bg-[#0a0a0a] p-4 space-y-3 shrink-0">
+                <span class="text-[11px] font-mono uppercase tracking-wider text-zinc-400 block border-b border-zinc-800 pb-1">Download</span>
+
+                <div>
+                    <select id="export-format" class="w-full bg-black border border-zinc-800 rounded-xl p-2 text-xs text-white focus:outline-none focus:border-white font-mono">
+                        <option value="txt">Text Script (.txt)</option>
+                        <option value="md">Markdown (.md)</option>
+                        <option value="wav">WAV Audio (.wav)</option>
+                    </select>
+                </div>
+
+                <button onclick="downloadExport()" class="w-full border border-white text-white hover:bg-white hover:text-black font-bold py-2.5 rounded-xl transition-all text-xs uppercase tracking-wider font-mono flex items-center justify-center space-x-2">
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+                    <span>Download Output</span>
+                </button>
+            </div>
+
+        </div>
+
+    </main>
+
+    <script src="static/js/main.js"></script>
+    <script src="static/js/speech-ops.js"></script>
+</body>
+</html>
