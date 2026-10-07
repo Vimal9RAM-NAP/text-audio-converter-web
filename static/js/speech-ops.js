@@ -107,7 +107,7 @@ function downloadExport() {
 
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
-    link.download = `voicescript_export_${Date.now()}.${format}`;
+    link.download = `mimic_you_export_${Date.now()}.${format}`;
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
