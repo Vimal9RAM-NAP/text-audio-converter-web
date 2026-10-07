@@ -7,38 +7,44 @@ const canvas = document.getElementById('visualizer-canvas');
 const ctx = canvas.getContext('2d');
 
 function initCanvas() {
+    if (!canvas) return;
     canvas.width = canvas.parentElement.clientWidth;
     canvas.height = canvas.parentElement.clientHeight;
 }
 window.addEventListener('resize', initCanvas);
-initCanvas();
 
 function populateVoices() {
     if (!synth) return;
     voices = synth.getVoices();
-    voiceSelect.innerHTML = '';
 
+    if (voices.length === 0) return;
+
+    voiceSelect.innerHTML = '';
     voices.forEach((voice, i) => {
         const option = document.createElement('option');
         option.textContent = `${voice.name} (${voice.lang})`;
         option.value = i;
-        if (voice.default) option.selected = true;
+        if (voice.default || voice.lang.includes('en')) option.selected = true;
         voiceSelect.appendChild(option);
     });
 }
 
+
 populateVoices();
-if (synth && synth.onvoiceschanged !== undefined) {
+if (synth) {
     synth.onvoiceschanged = populateVoices;
+    
+    setTimeout(populateVoices, 500);
 }
 
 function drawWave(active) {
+    if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
-    const bars = 32;
+    const bars = 28;
     const barWidth = canvas.width / bars;
 
     for (let i = 0; i < bars; i++) {
-        const height = active ? Math.random() * (canvas.height - 10) + 10 : 4;
+        const height = active ? Math.random() * (canvas.height - 8) + 6 : 3;
         ctx.fillStyle = '#ffffff';
         ctx.fillRect(i * barWidth, (canvas.height - height) / 2, barWidth - 3, height);
     }
@@ -113,4 +119,5 @@ function downloadExport() {
     document.body.removeChild(link);
 }
 
+initCanvas();
 drawWave(false);
