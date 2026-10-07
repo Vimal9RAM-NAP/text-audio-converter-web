@@ -108,7 +108,13 @@ function downloadExport() {
         return;
     }
 
-    const mimeTypes = { txt: 'text/plain', md: 'text/markdown', wav: 'audio/wav' };
+    const mimeTypes = {
+        txt: 'text/plain',
+        md: 'text/markdown',
+        mp3: 'audio/mp3',
+        wav: 'audio/wav'
+    };
+
     const blob = new Blob([text], { type: mimeTypes[format] || 'text/plain' });
 
     const link = document.createElement('a');
